@@ -1,4 +1,4 @@
-#Team xPace - Udacity Autonomous Car ND Capstone Project 2019
+# Team xPace - Udacity Autonomous Car ND Capstone Project 2019
 
 
 ## The Team: xPace
@@ -12,35 +12,39 @@
 | Perception Architect | Kosuke Kuzuoka            |    kousuke.newlife@gmail.com            |      [KKosukeee](https://github.com/KKosukeee)         |
 
 
-###Team Project Plan
+### Team Project Plan
 
 [ProjectPlan](https://docs.google.com/spreadsheets/d/1yXDmX8VkRF4R1uFpLf4eosONtoQGhlpvyE3rIhGkhIw/edit?usp=drive_open&ouid=0)
 
 [ProgressReport](https://docs.google.com/spreadsheets/d/1yXDmX8VkRF4R1uFpLf4eosONtoQGhlpvyE3rIhGkhIw/edit?usp=drive_open&ouid=0)
 
 
-####Team Shared Area
+#### Team Shared Area
 
 [GoogleDrive](https://drive.google.com/drive/folders/12-OgSGg3DqfWhmPE_lWJkIk2IxPkl_jM)
 
-####Team Collaboration
+#### Team Collaboration
+
 [xPace_Team_Slack](xPaceUdacityCapstone.slack.com)
 
-####Team SCMF
+#### Team SCMF
+
 [Team_xPace_Git](https://github.com/RichGit101/xPace_team/edit/master/README.md)
 
-####Team Project Documentation
+#### Team Project Documentation
+
 [Team_xPace_Project_Documentation](https://drive.google.com/drive/folders/1T-12yLj-_NfmBouQKXBK3eX_UQgRaxJd?usp=sharing)
 
-####xPace Project Demonstration
+#### xPace Project Demonstration
 
-####xPace Project Test and Safety report
+#### xPace Project Test and Safety report
 
 
-####xPace Planned Enhancements
+#### xPace Planned Enhancements
 
-####xPace Known Issues and Bugs
-##Introduction
+#### xPace Known Issues and Bugs
+
+## Introduction
 
     This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
