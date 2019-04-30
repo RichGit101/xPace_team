@@ -37,12 +37,35 @@
 
 #### xPace Project Demonstration
 
+[Team_xPace_Project_Demo](https://drive.google.com/drive/folders/1a9IHUFllxRHKIZx4J7LWxIYQd2k1cTsx)
+
 #### xPace Project Test and Safety report
 
+[Verification](https://drive.google.com/drive/folders/1WJEgrnbgu9aSMsXbmWnaCZ-HcJzWg1xa)
+
+[Safety](https://drive.google.com/drive/folders/1XA0LDGLaKKo0rhIgDFfnr9bDELPaUpDO)
 
 #### xPace Planned Enhancements
 
+[Team_xPace_Kaizen_Enhancements](https://drive.google.com/drive/folders/1tay3dr-yKMdMzBEvEtzd6e06AZNQVQtD)
+
 #### xPace Known Issues and Bugs
+
+[Team_xPace_Known_Bugs_Report](https://drive.google.com/drive/folders/1f1nXcUWi1Mf-WWFqh8-Vg9LJgh1jBq98)
+
+### XPace Software Architecture and Quality Control
+
+Planned. WIP.
+Architecture Framework, Standards and road map
+
+### XPace Car Platform Architecture and Quality Control
+
+Planned. Kaizen. Design of mechanical and mechatronics, systems engineering  WIP
+
+
+### XPace Car Product Strategy 
+
+Planned
 
 ## Introduction
 
