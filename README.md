@@ -25,7 +25,7 @@
 
 #### Team Collaboration
 
-[xPace_Team_Slack](xPaceUdacityCapstone.slack.com)
+[xPace_Team_Slack](https://xPaceUdacityCapstone.slack.com)
 
 #### Team SCMF
 
