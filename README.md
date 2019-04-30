@@ -1,4 +1,33 @@
-This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
+#Team xPace - Udacity Autonomous Car ND Capstone Project
+
+
+## The Team: Laters
+
+|           | Name                     |    E-Mail                        |      GitHub                                     |
+| --------- | -------------------------| -------------------------------- | :----------------------------------------------:|
+| Team Lead | Richard V          |    RichOpenLearning@gmail.com   |      [RichGit101](https://github.com/RichGit101)     |
+| Robotics Architect| Sidharth Das|    sidharth2189@gmail.com       |      [sidharth2189](https://github.com/sidharth2189)|
+| Planning Architect | Linas Kondrackis           |    linaskondrackis@gmail.com      |      [LinasKo](https://github.com/LinasKo)       |
+| Integration Architect   | Sean Iqbal     |    siqb00@gmail.com     |      [siqb](https://github.com/siqb)    |
+| Perception Architect | Kosuke Kuzuoka            |    kousuke.newlife@gmail.com            |      [KKosukeee](https://github.com/KKosukeee)         |
+
+
+    This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
+
+
+
+
+The operating system Carla runs on is Ubuntu Linux.
+
+Udacity Self-Driving Car Harware Specs:
+
+31.4 GiB Memory
+Intel Core i7-6700K CPU @ 4 GHz x 8
+TITAN X Graphics
+64-bit OS
+
+
+
 
 Please use **one** of the two installation options, either native **or** docker installation.
 
