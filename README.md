@@ -7,7 +7,7 @@
 | --------- | -------------------------| -------------------------------- | :----------------------------------------------:|
 | Team Lead | Richard V          |    RichOpenLearning@gmail.com   |      [RichGit101](https://github.com/RichGit101)     |
 | Robotics Architect| Sidharth Das|    sidharth2189@gmail.com       |      [sidharth2189](https://github.com/sidharth2189)|
-| Planning Architect | Linas Kondrackis           |    linaskondrackis@gmail.com      |      [LinasKo](https://github.com/LinasKo)       |
+| Technology Architect | Linas Kondrackis           |    linaskondrackis@gmail.com      |      [LinasKo](https://github.com/LinasKo)       |
 | Integration Architect   | Sean Iqbal     |    siqb00@gmail.com     |      [siqb](https://github.com/siqb)    |
 | Perception Architect | Kosuke Kuzuoka            |    kousuke.newlife@gmail.com            |      [KKosukeee](https://github.com/KKosukeee)         |
 
