@@ -53,17 +53,17 @@
 
 [Team_xPace_Known_Bugs_Report](https://drive.google.com/drive/folders/1f1nXcUWi1Mf-WWFqh8-Vg9LJgh1jBq98)
 
-### XPace Software Architecture and Quality Control
+### xPace Software Architecture and Quality Control
 
 Planned. WIP.
 Architecture Framework, Standards and road map
 
-### XPace Car Platform Architecture and Quality Control
+### xPace Car Platform Architecture and Quality Control
 
 Planned. Kaizen. Design of mechanical and mechatronics, systems engineering  WIP
 
 
-### XPace Car Product Strategy 
+### xPace Car Product Strategy 
 
 Planned
 
