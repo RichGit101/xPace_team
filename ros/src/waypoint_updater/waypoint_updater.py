@@ -4,7 +4,10 @@ import numpy as np
 import rospy
 from geometry_msgs.msg import PoseStamped
 from styx_msgs.msg import Lane, Waypoint
+<<<<<<< HEAD
 from std_msgs.msg import Int32
+=======
+>>>>>>> 1b4e1850cbec057d5e13c1de4dbe90a62ec8485c
 from scipy.spatial import KDTree
 
 import math
@@ -43,8 +46,12 @@ class WaypointUpdater(object):
 
         # TODO: Add other member variables you need below
 	self.pose = None
+<<<<<<< HEAD
 	self.base_lane = None
 	self.stopline_wp_idx = -1
+=======
+	self.base_waypoints = None
+>>>>>>> 1b4e1850cbec057d5e13c1de4dbe90a62ec8485c
 	self.waypoints_2D = None
 	self.waypoint_tree = None
 
@@ -53,8 +60,15 @@ class WaypointUpdater(object):
     def loop(self):
         rate = rospy.Rate(50)
 	while not rospy.is_shutdown():
+<<<<<<< HEAD
 	    if self.pose and self.base_lane:
 		self.publish_waypoints()
+=======
+	    if self.pose and self.base_waypoints:
+	    # Get closest waypoint
+		closest_waypoint_idx = self.get_closest_waypoint_idx()
+		self.publish_waypoints(closest_waypoint_idx)
+>>>>>>> 1b4e1850cbec057d5e13c1de4dbe90a62ec8485c
 	    rate.sleep()
 
     def get_closest_waypoint_idx(self):
@@ -77,6 +91,7 @@ class WaypointUpdater(object):
 	    closest_idx = (closest_idx + 1) % len(self.waypoints_2D)
 	return closest_idx
 
+<<<<<<< HEAD
     def publish_waypoints(self):
         final_lane = self.generate_lane()
 	self.final_waypoints_pub.publish(final_lane)
@@ -110,6 +125,13 @@ class WaypointUpdater(object):
 	    temp.append(p)
 
 	return temp
+=======
+    def publish_waypoints(self, closest_idx):
+        lane = Lane()
+	lane.header = self.base_waypoints.header
+	lane.waypoints = self.base_waypoints.waypoints[closest_idx:closest_idx + LOOKAHEAD_WPS]
+	self.final_waypoints_pub.publish(lane)
+>>>>>>> 1b4e1850cbec057d5e13c1de4dbe90a62ec8485c
 
     def pose_cb(self, msg):
         # TODO: Implement
@@ -117,7 +139,11 @@ class WaypointUpdater(object):
 
     def waypoints_cb(self, waypoints):
         # TODO: Implement
+<<<<<<< HEAD
         self.base_lane = waypoints
+=======
+        self.base_waypoints = waypoints
+>>>>>>> 1b4e1850cbec057d5e13c1de4dbe90a62ec8485c
 	if not self.waypoints_2D:
 	    self.waypoints_2D = [[waypoint.pose.pose.position.x, waypoint.pose.pose.position.y] for waypoint in waypoints.waypoints]
 	    self.waypoint_tree = KDTree(self.waypoints_2D)
