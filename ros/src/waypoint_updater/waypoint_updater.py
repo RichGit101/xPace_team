@@ -99,8 +99,7 @@ class WaypointUpdater(object):
         for i, wp in enumerate(waypoints):
             p = Waypoint()
             p.pose = wp.pose
-            stop_idx = max(self.stopline_wp_idx - closest_idx - 2,
-                           0)  # Two waypoints back from stop line so that nose of car stops at line
+            stop_idx = max(self.stopline_wp_idx - closest_idx - 2, 0)  # Two waypoints back from stop line so that nose of car stops at line
             dist = self.distance(waypoints, i, stop_idx)
             vel = math.sqrt(2 * MAX_DECEL * dist)
             if vel < 1.:
