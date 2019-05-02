@@ -87,7 +87,7 @@ class TLDetector(object):
 
         # Skip images to reduce computation load
         self.images_received += 1
-        if self.images_received % (SKIP_IMAGES + 1) != 1:
+        if self.images_received % (SKIP_IMAGES + 1) != 0:
             return
 
         self.has_image = True
