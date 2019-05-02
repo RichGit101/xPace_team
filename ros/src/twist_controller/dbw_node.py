@@ -31,6 +31,8 @@ that we have created in the `__init__` function.
 
 '''
 
+PUBLISH_FREQUENCY_HZ = 50  # Carla expects publishing to happen at 50 Hz or faster.
+
 
 class DBWNode(object):
     def __init__(self):
@@ -81,7 +83,7 @@ class DBWNode(object):
         self.loop()
 
     def loop(self):
-        rate = rospy.Rate(50)  # 50Hz
+        rate = rospy.Rate(PUBLISH_FREQUENCY_HZ)
         while not rospy.is_shutdown():
             # TODO: Get predicted throttle, brake, and steering using `twist_controller`
             # You should only publish the control commands if dbw is enabled

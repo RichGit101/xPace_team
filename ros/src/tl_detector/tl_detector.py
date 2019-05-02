@@ -14,10 +14,18 @@ import yaml
 
 STATE_COUNT_THRESHOLD = 3
 
+# When receiving images, skip this many, before reading in a new one. Default is 0.
+# This is used to reduce computation load when the camera is on.
+SKIP_IMAGES = 0
+assert type(SKIP_IMAGES) is int and SKIP_IMAGES >= 0
+
 
 class TLDetector(object):
     def __init__(self):
         rospy.init_node('tl_detector')
+
+        # Track how many images were received
+        self.images_received = 0
 
         self.pose = None
         self.waypoints = None
@@ -76,6 +84,12 @@ class TLDetector(object):
             msg (Image): image from car-mounted camera
 
         """
+
+        # Skip images to reduce computation load
+        self.images_received += 1
+        if self.images_received % (SKIP_IMAGES + 1) != 1:
+            return
+
         self.has_image = True
         self.camera_image = msg
         light_wp, state = self.process_traffic_lights()
@@ -102,14 +116,18 @@ class TLDetector(object):
         """Identifies the closest path waypoint to the given position
             https://en.wikipedia.org/wiki/Closest_pair_of_points_problem
         Args:
-            pose (Pose): position to match a waypoint to
+            x (float): x coordinate of the waypoint
+            y (float): y coordinate of the waypoint
 
         Returns:
             int: index of the closest waypoint in self.waypoints
 
         """
-        # TODO implement
         closest_idx = self.waypoint_tree.query([x, y], 1)[1]
+
+        # TODO: check if this does not cause the car to stop in the middle of the intersection - we're not checking
+        # if the traffic light is behind us. -Linas
+
         return closest_idx
 
     def get_light_state(self, light):
