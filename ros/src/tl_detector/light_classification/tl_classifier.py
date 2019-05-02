@@ -64,7 +64,6 @@ class TLClassifier(object):
         """
         # Start session for a prediction
         with tf.Session(graph=self.graph) as sess:
-            height, width = image.shape[:2]
 
             # Run the detector!!!
             (boxes, scores, classes, num) = sess.run(
