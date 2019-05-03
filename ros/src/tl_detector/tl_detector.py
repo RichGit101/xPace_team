@@ -12,12 +12,16 @@ import tf
 import cv2
 import yaml
 
-STATE_COUNT_THRESHOLD = 3
+STATE_COUNT_THRESHOLD = 1
 
 # When receiving images, skip this many, before reading in a new one. Default is 0.
 # This is used to reduce computation load when the camera is on.
-SKIP_IMAGES = 0
+SKIP_IMAGES = 6
 assert type(SKIP_IMAGES) is int and SKIP_IMAGES >= 0
+
+# Skip images if next traffic light is farther than this many waypoints
+ENABLE_TF_LOOKAHEAD_LIMIT = True
+TL_LOOKAHEAD_DISTANCE = 60  # Distance to first light = 20, distance from first to second = 461
 
 
 class TLDetector(object):
@@ -90,10 +94,15 @@ class TLDetector(object):
         if self.images_received % (SKIP_IMAGES + 1) != 0:
             return
 
+        light_wp, state, closest_dist_in_wps = self.process_traffic_lights()
+        
+        # Skip image if traffic light too far
+        if ENABLE_TF_LOOKAHEAD_LIMIT and closest_dist_in_wps > TL_LOOKAHEAD_DISTANCE:
+            return
+            
         self.has_image = True
         self.camera_image = msg
-        light_wp, state = self.process_traffic_lights()
-
+        
         '''
         Publish upcoming red lights at camera frequency.
         Each predicted state has to occur `STATE_COUNT_THRESHOLD` number
@@ -159,10 +168,12 @@ class TLDetector(object):
         Returns:
             int: index of waypoint closes to the upcoming stop line for a traffic light (-1 if none exists)
             int: ID of traffic light color (specified in styx_msgs/TrafficLight)
+            int: number of waypoints between the car and the closet light (total number of waypoints, if not found)
 
         """
         closest_light = None  # closest traffic light
         line_wp_idx = None
+        closest_dist_in_wps = len(self.waypoints.waypoints)
 
         # List of positions that correspond to the line to stop in front of for a given intersection
         stop_line_positions = self.config['stop_line_positions']
@@ -170,23 +181,22 @@ class TLDetector(object):
             car_wp_idx = self.get_closest_waypoint(self.pose.pose.position.x, self.pose.pose.position.y)
 
             # TODO find the closest visible traffic light (if one exists)
-            diff = len(self.waypoints.waypoints)
             for i, light in enumerate(self.lights):
                 # Get stop line waypoint index
                 line = stop_line_positions[i]
                 temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
                 # Find closest stop line waypoint index
                 d = temp_wp_idx - car_wp_idx
-                if 0 < d < diff:
-                    diff = d
+                if 0 < d < closest_dist_in_wps:
+                    closest_dist_in_wps = d
                     closest_light = light
                     line_wp_idx = temp_wp_idx
 
         if closest_light:
             state = self.get_light_state(closest_light)
-            return line_wp_idx, state
+            return line_wp_idx, state, closest_dist_in_wps
 
-        return -1, TrafficLight.UNKNOWN
+        return -1, TrafficLight.UNKNOWN, closest_dist_in_wps
 
 
 if __name__ == '__main__':
