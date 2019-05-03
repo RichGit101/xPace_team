@@ -65,6 +65,6 @@ class Controller(object):
 	elif throttle < 0.1 and vel_error < 0:
 	    throttle = 0
 	    decel = max(vel_error, self.decel_limit)
-	    brake = self.vehicle_mass * self.wheel_radium *abs(decel) # Torque - N*m
+	    brake = self.vehicle_mass * self.wheel_radius *abs(decel) # Torque - N*m
 
 	return throttle, brake, steer
