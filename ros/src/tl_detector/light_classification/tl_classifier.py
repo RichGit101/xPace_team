@@ -2,8 +2,8 @@ from styx_msgs.msg import TrafficLight
 import tensorflow as tf
 import cv2 as cv
 import numpy as np
-from ros.src.tl_detector.utils import label_map_util
-from ros.src.tl_detector.utils import visualization_utils as vis_util
+from utils import label_map_util
+from utils import visualization_utils as vis_util
 
 class TLClassifier(object):
     def __init__(self):
