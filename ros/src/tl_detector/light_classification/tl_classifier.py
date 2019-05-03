@@ -10,8 +10,8 @@ class TLClassifier(object):
         #TODO load classifier
 
         # TODO: Modify variables below
-        PATH_TO_PB_FILE = ''
-        PATH_TO_LABELS = ''
+        PATH_TO_PB_FILE = '/home/siqb/udacity_sdc_engineer/term_3/xPace_team/ros/src/tl_detector/TL_detectors/sim_model/frozen_inference_graph.pb'
+        PATH_TO_LABELS = '/home/siqb/udacity_sdc_engineer/term_3/xPace_team/ros/src/tl_detector/TL_detectors/sim_model/label_map.pbtxt'
         self.NUM_CLASSES = 4
         self.THRESHOLD = 0.5
 
