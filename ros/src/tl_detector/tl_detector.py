@@ -17,7 +17,7 @@ STATE_COUNT_THRESHOLD = 3
 
 # When receiving images, skip this many, before reading in a new one. Default is 0.
 # This is used to reduce computation load when the camera is on.
-SKIP_IMAGES = 0
+SKIP_IMAGES = 3
 assert type(SKIP_IMAGES) is int and SKIP_IMAGES >= 0
 
 
