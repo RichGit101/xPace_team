@@ -99,6 +99,8 @@ class TLDetector(object):
         self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
         self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
         light_wp, state = self.process_traffic_lights()
+        cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
+        cv2.waitKey(10)
 
         '''
         Publish upcoming red lights at camera frequency.
