@@ -11,6 +11,7 @@ from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
 import yaml
+import numpy as np
 
 STATE_COUNT_THRESHOLD = 3
 
@@ -92,6 +93,11 @@ class TLDetector(object):
 
         self.has_image = True
         self.camera_image = msg
+        height = self.camera_image.height
+        width = self.camera_image.width
+        channels = len(self.camera_image.data)/(height * width)
+        self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
+        self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
         light_wp, state = self.process_traffic_lights()
 
         '''
