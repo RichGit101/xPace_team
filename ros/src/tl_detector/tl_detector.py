@@ -98,7 +98,7 @@ class TLDetector(object):
         channels = len(self.camera_image.data)/(height * width)
         self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
         self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
-        light_wp, state = self.process_traffic_lights()
+        boxes, classes, confs = self.light_classifier.inference_for_single_image(self.np_camera_img)
         cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
         cv2.waitKey(10)
 
