@@ -101,7 +101,7 @@ class TLClassifier(object):
             min_score_thresh=0.5,
             line_thickness=3)
 
-    def get_classification(self, image):
+    def get_classification(self, classes):
         """Determines the color of the traffic light in the image
 
         Args:
@@ -112,4 +112,18 @@ class TLClassifier(object):
 
         """
         #TODO implement light color prediction
-        return TrafficLight.UNKNOWN
+        states = []
+        for i, a_class in enumerate(classes):
+          class_name = self.category_index[classes[i]]['name']
+          if class_name == 'Green':
+            states.append(TrafficLight.GREEN)
+          elif class_name == 'Red':
+            states.append(TrafficLight.RED)
+          elif class_name == 'Yellow':
+            states.append(TrafficLight.YELLOW)
+          elif class_name == 'off':
+            states.append(TrafficLight.OFF)
+          else:
+            states.append(TrafficLight.UNKNOWN)
+
+        return states

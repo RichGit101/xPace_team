@@ -99,6 +99,13 @@ class TLDetector(object):
         self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
         self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
         boxes, classes, confs = self.light_classifier.inference_for_single_image(self.np_camera_img)
+        state = None
+        if boxes.size > 0:
+          if confs.shape == (1,):
+            confs = np.array([confs]) 
+          states = self.light_classifier.get_classification(classes)
+          state = states[np.argmax(confs)]
+          self.light_classifier.visualize_result(self.np_camera_img, boxes, classes, confs)
         cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
         cv2.waitKey(10)
 
