@@ -2,16 +2,17 @@ from styx_msgs.msg import TrafficLight
 import tensorflow as tf
 import cv2 as cv
 import numpy as np
-from ros.src.tl_detector.utils import label_map_util
-from ros.src.tl_detector.utils import visualization_utils as vis_util
+from utils import label_map_util
+from utils import visualization_utils as vis_util
+import os
 
 class TLClassifier(object):
     def __init__(self):
         #TODO load classifier
 
         # TODO: Modify variables below
-        PATH_TO_PB_FILE = ''
-        PATH_TO_LABELS = ''
+        PATH_TO_PB_FILE = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/frozen_inference_graph.pb')
+        PATH_TO_LABELS = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/label_map.pbtxt')
         self.NUM_CLASSES = 4
         self.THRESHOLD = 0.5
 
@@ -101,7 +102,7 @@ class TLClassifier(object):
             min_score_thresh=0.5,
             line_thickness=3)
 
-    def get_classification(self, image):
+    def get_classification(self, classes):
         """Determines the color of the traffic light in the image
 
         Args:
@@ -112,4 +113,18 @@ class TLClassifier(object):
 
         """
         #TODO implement light color prediction
-        return TrafficLight.UNKNOWN
+        states = []
+        for i, a_class in enumerate(classes):
+          class_name = self.category_index[classes[i]]['name']
+          if class_name == 'Green':
+            states.append(TrafficLight.GREEN)
+          elif class_name == 'Red':
+            states.append(TrafficLight.RED)
+          elif class_name == 'Yellow':
+            states.append(TrafficLight.YELLOW)
+          elif class_name == 'off':
+            states.append(TrafficLight.OFF)
+          else:
+            states.append(TrafficLight.UNKNOWN)
+
+        return states

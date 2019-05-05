@@ -11,12 +11,13 @@ from light_classification.tl_classifier import TLClassifier
 import tf
 import cv2
 import yaml
+import numpy as np
 
 STATE_COUNT_THRESHOLD = 3
 
 # When receiving images, skip this many, before reading in a new one. Default is 0.
 # This is used to reduce computation load when the camera is on.
-SKIP_IMAGES = 0
+SKIP_IMAGES = 3
 assert type(SKIP_IMAGES) is int and SKIP_IMAGES >= 0
 
 
@@ -33,7 +34,6 @@ class TLDetector(object):
         self.lights = []
 
         sub1 = rospy.Subscriber('/current_pose', PoseStamped, self.pose_cb)
-        sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
 
         '''
         /vehicle/traffic_lights provides you with the location of the traffic light in 3D map space and
@@ -42,7 +42,7 @@ class TLDetector(object):
         simulator. When testing on the vehicle, the color state will not be available. You'll need to
         rely on the position of the light and the camera image to predict it.
         '''
-        sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
+       #sub3 = rospy.Subscriber('/vehicle/traffic_lights', TrafficLightArray, self.traffic_cb)
         sub6 = rospy.Subscriber('/image_color', Image, self.image_cb)
 
         config_string = rospy.get_param("/traffic_light_config")
@@ -61,6 +61,7 @@ class TLDetector(object):
         self.waypoints_2D = None
         self.waypoint_tree = None
 
+        sub2 = rospy.Subscriber('/base_waypoints', Lane, self.waypoints_cb)
         rospy.spin()
 
     def pose_cb(self, msg):
@@ -92,7 +93,22 @@ class TLDetector(object):
 
         self.has_image = True
         self.camera_image = msg
-        light_wp, state = self.process_traffic_lights()
+        height = self.camera_image.height
+        width = self.camera_image.width
+        channels = len(self.camera_image.data)/(height * width)
+        self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
+        self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
+        boxes, classes, confs = self.light_classifier.inference_for_single_image(self.np_camera_img)
+        state = None
+        if boxes.size > 0:
+          states = self.light_classifier.get_classification(classes)
+          state = states[np.argmax(confs)]
+          if confs.shape != (1,): # Workaround for IndexError from indexing into shape (1,) 
+              self.light_classifier.visualize_result(self.np_camera_img, boxes, classes, confs)
+          light_wp = self.find_next_intersection()
+
+        cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
+        cv2.waitKey(10)
 
         '''
         Publish upcoming red lights at camera frequency.
@@ -100,17 +116,18 @@ class TLDetector(object):
         of times till we start using it. Otherwise the previous stable state is
         used.
         '''
-        if self.state != state:
-            self.state_count = 0
-            self.state = state
-        elif self.state_count >= STATE_COUNT_THRESHOLD:
-            self.last_state = self.state
-            light_wp = light_wp if state == TrafficLight.RED else -1
-            self.last_wp = light_wp
-            self.upcoming_red_light_pub.publish(Int32(light_wp))
-        else:
-            self.upcoming_red_light_pub.publish(Int32(self.last_wp))
-        self.state_count += 1
+        if state != None:
+          if self.state != state:
+              self.state_count = 0
+              self.state = state
+          elif self.state_count >= STATE_COUNT_THRESHOLD:
+              self.last_state = self.state
+              light_wp = light_wp if state == TrafficLight.RED else -1
+              self.last_wp = light_wp
+              self.upcoming_red_light_pub.publish(Int32(light_wp))
+          else:
+              self.upcoming_red_light_pub.publish(Int32(self.last_wp))
+          self.state_count += 1
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
@@ -152,16 +169,15 @@ class TLDetector(object):
         ##Get classification
         # return self.light_classifier.get_classification(cv_image)
 
-    def process_traffic_lights(self):
-        """Finds closest visible traffic light, if one exists, and determines its
-            location and color
+    def find_next_intersection(self):
+        """Finds closest visible traffic light stop line and determines its
+            location
 
         Returns:
-            int: index of waypoint closes to the upcoming stop line for a traffic light (-1 if none exists)
-            int: ID of traffic light color (specified in styx_msgs/TrafficLight)
+            int: index of waypoint closes to the upcoming stop line for a traffic light
 
         """
-        closest_light = None  # closest traffic light
+        closest_line = None  # closest traffic light line
         line_wp_idx = None
 
         # List of positions that correspond to the line to stop in front of for a given intersection
@@ -171,23 +187,18 @@ class TLDetector(object):
 
             # TODO find the closest visible traffic light (if one exists)
             diff = len(self.waypoints.waypoints)
-            for i, light in enumerate(self.lights):
-                # Get stop line waypoint index
-                line = stop_line_positions[i]
-                temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
-                # Find closest stop line waypoint index
-                d = temp_wp_idx - car_wp_idx
-                if 0 < d < diff:
-                    diff = d
-                    closest_light = light
-                    line_wp_idx = temp_wp_idx
 
-        if closest_light:
-            state = self.get_light_state(closest_light)
-            return line_wp_idx, state
-
-        return -1, TrafficLight.UNKNOWN
-
+            for i, line in enumerate(stop_line_positions):
+              # Get stop line waypoint index
+              temp_wp_idx = self.get_closest_waypoint(line[0], line[1])
+              # Find closest stop line waypoint index
+              d = temp_wp_idx - car_wp_idx
+              if 0 < d < diff:
+                  diff = d
+                  closest_line = line
+                  line_wp_idx = temp_wp_idx
+            
+        return line_wp_idx
 
 if __name__ == '__main__':
     try:
