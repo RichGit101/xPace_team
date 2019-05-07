@@ -200,7 +200,11 @@ class TLDetector(object):
         return line_wp_idx
 
 if __name__ == '__main__':
+    detector = None
     try:
-        TLDetector()
+        detector = TLDetector()
     except rospy.ROSInterruptException:
         rospy.logerr('Could not start traffic node.')
+    finally:
+        if detector is not None:
+            detector.light_classifier.sess.close()
