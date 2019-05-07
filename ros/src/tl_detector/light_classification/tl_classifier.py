@@ -94,9 +94,9 @@ class TLClassifier(object):
         """
         vis_util.visualize_boxes_and_labels_on_image_array(
             image,
-            np.squeeze(boxes),
-            np.squeeze(classes).astype(np.int32),
-            np.squeeze(confidences),
+            boxes,
+            classes.astype(np.int32),
+            confidences,
             self.category_index,
             use_normalized_coordinates=True,
             min_score_thresh=0.5,
