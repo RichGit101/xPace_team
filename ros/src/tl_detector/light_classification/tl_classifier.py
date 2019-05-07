@@ -7,12 +7,19 @@ from utils import visualization_utils as vis_util
 import os
 
 class TLClassifier(object):
-    def __init__(self):
+    def __init__(self, is_site):
+        """
+        :param is_site:  bool, True if testing on site, False if in the simulator
+        """
         #TODO load classifier
 
         # TODO: Modify variables below
-        PATH_TO_PB_FILE = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/frozen_inference_graph.pb')
-        PATH_TO_LABELS = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/label_map.pbtxt')
+        if is_site:
+            PATH_TO_PB_FILE = os.path.abspath(__file__ + '/../../TL_detectors/real_model/frozen_inference_graph.pb')
+            PATH_TO_LABELS = os.path.abspath(__file__ + '/../../TL_detectors/real_model/label_map.pbtxt')
+        else:
+            PATH_TO_PB_FILE = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/frozen_inference_graph.pb')
+            PATH_TO_LABELS = os.path.abspath(__file__ + '/../../TL_detectors/sim_model/label_map.pbtxt')
         self.NUM_CLASSES = 4
         self.THRESHOLD = 0.5
 
