@@ -42,6 +42,9 @@ class TLClassifier(object):
         )
         self.category_index = label_map_util.create_category_index(categories)
 
+        # Start session for a prediction
+        self.sess = tf.Session(graph=self.graph)
+
     def inference_for_single_image(self, image):
         """
         does the inference and returns the result.
@@ -63,20 +66,18 @@ class TLClassifier(object):
                 confidence can be found by positive_confidences[i][0] which is in range of [0, 1.0]
 
         """
-        # Start session for a prediction
-        with tf.Session(graph=self.graph) as sess:
 
-            # Run the detector!!!
-            (boxes, scores, classes, num) = sess.run(
-                [self.res_bbox, self.res_score, self.res_classes, self.num_detection],
-                feed_dict={self.input_img: image[None, ...]}
-            )
+        # Run the detector!!!
+        (boxes, scores, classes, num) = self.sess.run(
+            [self.res_bbox, self.res_score, self.res_classes, self.num_detection],
+            feed_dict={self.input_img: image[None, ...]}
+        )
 
-            # Get detections with the confidence >= self.THRESHOLD
-            positive_indices = np.where(scores[0] >= self.THRESHOLD)[0]
-            positive_boxes = boxes[0][positive_indices]
-            positive_classes = classes[0][positive_indices]
-            positive_confidences = scores[0][positive_indices]
+        # Get detections with the confidence >= self.THRESHOLD
+        positive_indices = np.where(scores[0] >= self.THRESHOLD)[0]
+        positive_boxes = boxes[0][positive_indices]
+        positive_classes = classes[0][positive_indices]
+        positive_confidences = scores[0][positive_indices]
 
         return (positive_boxes, positive_classes, positive_confidences)
 
