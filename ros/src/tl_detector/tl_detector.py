@@ -103,8 +103,7 @@ class TLDetector(object):
         if boxes.size > 0:
           states = self.light_classifier.get_classification(classes)
           state = states[np.argmax(confs)]
-          if confs.shape != (1,): # Workaround for IndexError from indexing into shape (1,) 
-              self.light_classifier.visualize_result(self.np_camera_img, boxes, classes, confs)
+          self.light_classifier.visualize_result(self.np_camera_img, boxes, classes, confs)
           light_wp = self.find_next_intersection()
 
         cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
