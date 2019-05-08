@@ -3,7 +3,6 @@ import tensorflow as tf
 import cv2 as cv
 import numpy as np
 from utils import label_map_util
-from utils import visualization_utils as vis_util
 import os
 
 class TLClassifier(object):
@@ -87,28 +86,6 @@ class TLClassifier(object):
         positive_confidences = scores[0][positive_indices]
 
         return (positive_boxes, positive_classes, positive_confidences)
-
-    def visualize_result(self, image, boxes, classes, confidences):
-        """
-        Visualize bounding boxes on the image in place
-        Args:
-            image: 3D array where the shape is [height, width, 3]
-            boxes: 2D array which is returned by inference_for_single_image method
-            classes: 2D array which is returned by inference_for_single_image method
-            confidences: 2D array which is returned by inference_for_single_image method
-
-        Returns:
-
-        """
-        vis_util.visualize_boxes_and_labels_on_image_array(
-            image,
-            boxes,
-            classes.astype(np.int32),
-            confidences,
-            self.category_index,
-            use_normalized_coordinates=True,
-            min_score_thresh=0.5,
-            line_thickness=3)
 
     def get_classification(self, classes):
         """Determines the color of the traffic light in the image

@@ -51,6 +51,7 @@ class TLDetector(object):
         self.upcoming_red_light_pub = rospy.Publisher('/traffic_waypoint', Int32, queue_size=1)
 
         self.bridge = CvBridge()
+        self.light_classifier = None
         self.light_classifier = TLClassifier(self.config["is_site"])
         self.listener = tf.TransformListener()
 
@@ -95,19 +96,17 @@ class TLDetector(object):
         self.camera_image = msg
         height = self.camera_image.height
         width = self.camera_image.width
-        channels = len(self.camera_image.data)/(height * width)
+        channels = len(self.camera_image.data) / (height * width)
         self.np_camera_img = np.fromstring(self.camera_image.data, np.uint8)
         self.np_camera_img = self.np_camera_img.reshape((height, width, channels))
-        boxes, classes, confs = self.light_classifier.inference_for_single_image(self.np_camera_img)
-        state = None
-        if boxes.size > 0:
-          states = self.light_classifier.get_classification(classes)
-          state = states[np.argmax(confs)]
-          self.light_classifier.visualize_result(self.np_camera_img, boxes, classes, confs)
-          light_wp = self.find_next_intersection()
 
-        cv2.imshow('image', cv2.cvtColor(self.np_camera_img, cv2.COLOR_RGB2BGR))
-        cv2.waitKey(10)
+        state = None
+        if self.light_classifier:
+            boxes, classes, confs = self.light_classifier.inference_for_single_image(self.np_camera_img)
+            if boxes.size > 0:
+                states = self.light_classifier.get_classification(classes)
+                state = states[np.argmax(confs)]
+                light_wp = self.find_next_intersection()
 
         '''
         Publish upcoming red lights at camera frequency.
@@ -115,18 +114,18 @@ class TLDetector(object):
         of times till we start using it. Otherwise the previous stable state is
         used.
         '''
-        if state != None:
-          if self.state != state:
-              self.state_count = 0
-              self.state = state
-          elif self.state_count >= STATE_COUNT_THRESHOLD:
-              self.last_state = self.state
-              light_wp = light_wp if state == TrafficLight.RED else -1
-              self.last_wp = light_wp
-              self.upcoming_red_light_pub.publish(Int32(light_wp))
-          else:
-              self.upcoming_red_light_pub.publish(Int32(self.last_wp))
-          self.state_count += 1
+        if state is not None:
+            if self.state != state:
+                self.state_count = 0
+                self.state = state
+            elif self.state_count >= STATE_COUNT_THRESHOLD:
+                self.last_state = self.state
+                light_wp = light_wp if state == TrafficLight.RED else -1
+                self.last_wp = light_wp
+                self.upcoming_red_light_pub.publish(Int32(light_wp))
+            else:
+                self.upcoming_red_light_pub.publish(Int32(self.last_wp))
+            self.state_count += 1
 
     def get_closest_waypoint(self, x, y):
         """Identifies the closest path waypoint to the given position
